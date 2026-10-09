@@ -56,32 +56,21 @@ The file contains the configuration required by the different ECMS components.
 
 The expected top-level structure is:
 
+```json
 {
-"collection": {
+  "collection": {
     "pollingIntervalSeconds": 1,
     "devicesConfiguration": [
-        {
-            "id": 1,
-            "kind": 1
-        },
-        {
-            "id": 2,
-            "kind": 3
-        },
-        {
-            "id": 3,
-            "kind": 3
-        },
-        {
-            "id": 4,
-            "kind": 2
-        },
+      { "id": 1, "kind": 1 },
+      { "id": 2, "kind": 3 },
+      { "id": 3, "kind": 3 },
+      { "id": 4, "kind": 2 }
     ]
   },
   "core": {},
   "communication": {}
 }
-}
+```
 
 Each section contains the configuration required by the corresponding project:
 
@@ -92,6 +81,8 @@ Each section contains the configuration required by the corresponding project:
 - `communication` — configuration for `ECMS.Communication`
 
 `ECMS.Host` is responsible for reading these sections and creating the corresponding configuration objects defined in `ECMS.Contracts`.
+
+The current Host implementation requires `collection`, `communication`, `core` sections and reads it from `config.json`.
 
 ---
 
@@ -119,6 +110,8 @@ ECMS.Host
 `ECMS.Communication` uses services provided by `ECMS.Core` through dependency injection.
 
 `ECMS.Collection` and `ECMS.Core` communicate through the collection channel configured by the Host.
+
+At this stage, Host registers `ECMS.Collection` and the channel that will carry its output. `ECMS.Core` and `ECMS.Communication` are not yet registered.
 
 The Host therefore acts as the place where the application dependencies are assembled. Individual projects should not be responsible for creating their own dependencies.
 

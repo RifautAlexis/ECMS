@@ -1,0 +1,33 @@
+{
+  "collection": {
+    "pollingIntervalSeconds": 1,
+    "devicesConfiguration": [
+      {
+        "id": 1,
+        "kind": 1
+      },
+      {
+        "id": 2,
+        "kind": 2
+      },
+      {
+        "id": 3,
+        "kind": 3
+      },
+      {
+        "id": 4,
+        "kind": 3
+      },
+      {
+        "id": 5,
+        "kind": 1
+      },
+      {
+        "id": 6,
+        "kind": 2
+      }
+    ]
+  },
+  "core": {},
+  "communication": {}
+}

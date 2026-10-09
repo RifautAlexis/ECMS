@@ -102,7 +102,8 @@ The configuration contains a list of devices:
 
 ```json
 {
-    "devices": [
+    "pollingIntervalSeconds": 1,
+    "devicesConfiguration": [
         {
             "id": 1,
             "kind": 1
@@ -123,6 +124,21 @@ The configuration contains a list of devices:
 }
 ```
 
+The implemented configuration property is named `devicesConfiguration`:
+
+```json
+{
+    "pollingIntervalSeconds": 1,
+    "devicesConfiguration": [
+        { "id": 1, "kind": 1 },
+        { "id": 2, "kind": 2 },
+        { "id": 3, "kind": 3 }
+    ]
+}
+```
+
+The polling interval must be positive. Device IDs must be positive and unique, and the currently supported kinds are `1` (RF power sensor), `2` (RF power amplifier), and `3` (multi-channel RF monitoring system). An empty device list is valid.
+
 This configuration allows the generator to know:
 
 - Which mock device instances must be created
@@ -142,7 +158,8 @@ For example:
 
 ```json
 {
-    "devices": [
+    "pollingIntervalSeconds": 1,
+    "devicesConfiguration": [
         {
             "id": 10,
             "kind": 2
@@ -246,6 +263,8 @@ Repeat
 The exact default collection interval will be defined during implementation.
 
 The collection interval is part of the current generator configuration and should not be considered a definitive requirement for physical device collection.
+
+The current implementation publishes one `CollectedData` envelope per configured device at each polling interval. The in-process channel has bounded capacity and applies backpressure until a consumer reads the collected data.
 
 ---
 

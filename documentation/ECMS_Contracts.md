@@ -78,10 +78,14 @@ The current structure is :
 ECMS.Contracts
 ├── CollectedData
 ├── CollectionConfiguration
+├── CommunicationtionConfiguration
+├── CorectionConfiguration
+├── DeviceConfiguration
 └── Devices
     ├── RfPowerSensorData
     ├── RfPowerAmplifierData
-    └── RfMonitoringSystemData
+    ├── RfMonitoringSystemData
+    └── RfMonitoringChannelData
 ```
 
 The individual contracts are intentionally not documented here. Their properties and semantics should be self-explanatory from the code and from the specifications of the corresponding functionality.
