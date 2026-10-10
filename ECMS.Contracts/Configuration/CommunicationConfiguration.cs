@@ -1,4 +1,4 @@
-namespace ECMS.Contracts;
+namespace ECMS.Contracts.Configuration;
 
 public sealed class CommunicationConfiguration
 {

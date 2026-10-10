@@ -1,5 +1,6 @@
 using System.Threading.Channels;
 using ECMS.Contracts;
+using ECMS.Contracts.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECMS.Collection;

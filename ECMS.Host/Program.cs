@@ -1,5 +1,6 @@
 using ECMS.Collection;
 using ECMS.Contracts;
+using ECMS.Contracts.Configuration;
 
 var builder = Host.CreateApplicationBuilder(args);
 

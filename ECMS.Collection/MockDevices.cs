@@ -1,4 +1,5 @@
 using ECMS.Contracts;
+using ECMS.Contracts.Configuration;
 using ECMS.Contracts.Devices;
 
 namespace ECMS.Collection;
