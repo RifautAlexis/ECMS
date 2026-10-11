@@ -15,13 +15,33 @@ Describe the capability provided by the feature and its expected behaviour.
 
 ## Functional requirements
 
-### FR-XXX-001 — Requirement name
+<details>
+<summary>FR-XXX-001 — Requirement name</summary>
+
+**Requirement**
 
 Describe one specific, unambiguous, and testable behaviour that ECMS must satisfy.
 
-### FR-XXX-002 — Requirement name
+**Acceptance criteria**
 
-Describe the next required behaviour.
+- Given that XXX, when YYY, then ZZZ.
+- Given that AAA, when BBB, then CCC.
+
+</details>
+
+<details>
+<summary>FR-XXX-002 — Requirement name</summary>
+
+**Requirement**
+
+Describe one specific, unambiguous, and testable behaviour that ECMS must satisfy.
+
+**Acceptance criteria**
+
+- Given that XXX, when YYY, then ZZZ.
+- Given that AAA, when BBB, then CCC.
+
+</details>
 
 ## Acceptance criteria
 
@@ -34,6 +54,10 @@ Record unresolved functional decisions that could affect the interpretation or i
 ## Dependencies
 
 Reference other features or requirements that this feature relies on, where applicable.
+
+## Dependents
+
+Reference other features or requirements depend on this feature, where applicable.
 ```
 
 ## Tips
@@ -48,4 +72,4 @@ A few points about this template:
 
 - **Open questions** prevent unresolved assumptions from silently becoming requirements.
 
-- **Dependencies** are useful when relevant, but shouldn't be filled with boilerplate.
+- **Dependencies** and **Dependents** are useful when relevant, but shouldn't be filled with boilerplate.
