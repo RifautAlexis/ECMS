@@ -1,28 +1,24 @@
 using ECMS.Collection;
 using ECMS.Contracts;
 using ECMS.Contracts.Configuration;
+using ECMS.Host.Configuration;
 
 var builder = Host.CreateApplicationBuilder(args);
 
 builder.Configuration.SetBasePath(AppContext.BaseDirectory);
-builder.Configuration.AddJsonFile("config.json", optional: false);
 
-var collectionConfiguration = builder.Configuration
-    .GetSection("collection")
-    .Get<CollectionConfiguration>()
-    ?? throw new InvalidDataException("The config.json file must contain a collection section.");
+const string configFileName = "config.json";
+var configFilePath = Path.Combine(AppContext.BaseDirectory, configFileName);
 
-// var coreConfiguration = builder.Configuration
-//                                      .GetSection("core")
-//                                      .Get<CoreConfiguration>()
-//                            ?? throw new InvalidDataException("The config.json file must contain a core section.");
-//
-// var communicationConfiguration = builder.Configuration
-//                                      .GetSection("communication")
-//                                      .Get<CommunicationConfiguration>()
-//                            ?? throw new InvalidDataException("The config.json file must contain a communication section.");
+if (!builder.Services.TryAddConfiguration(configFilePath, out var errors))
+{
+    // StartupFileLogger.LogErrors(errors);
 
-builder.Services.AddDeviceCollection(collectionConfiguration);
+    Environment.ExitCode = 1;
+    return;
+}
+
+// builder.Services.AddDeviceCollection(collectionConfiguration);
 
 var host = builder.Build();
 host.Run();
