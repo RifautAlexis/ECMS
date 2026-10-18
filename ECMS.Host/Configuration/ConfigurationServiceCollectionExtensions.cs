@@ -4,17 +4,18 @@ namespace ECMS.Host.Configuration;
 
 public static class ConfigurationServiceCollectionExtensions
 {
-    public static bool TryAddConfiguration(
-        this IServiceCollection services,
-        string configFilePath,
-        out List<string> errors)
+    public static void AddConfiguration(
+        this IServiceCollection services)
     {
+
+        const string configFileName = "config.json";
+        var configFilePath = Path.Combine(AppContext.BaseDirectory, configFileName);
         
-        errors = ValidateConfiguration(configFilePath);
+        var errors = ValidateConfiguration(configFilePath);
         
         if (errors.Count > 0)
         {
-            return false;
+            throw new ConfigurationValidationException(errors);
         }
         
         var configuration = new ConfigurationBuilder()
@@ -25,8 +26,7 @@ public static class ConfigurationServiceCollectionExtensions
         services.Configure<CollectionConfiguration>(configuration.GetSection("collection"));
         services.Configure<CoreConfiguration>(configuration.GetSection("core"));
         services.Configure<CommunicationConfiguration>(configuration.GetSection("communication"));
-
-        return true;
+        
     }
     
     private static List<string> ValidateConfiguration(string configFilePath)
