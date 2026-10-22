@@ -1,15 +1,13 @@
 namespace ECMS.Contracts.Configuration;
 
-public sealed class CollectionConfiguration
-{
-    public int PollingIntervalSeconds { get; init; } = 1;
+public record CollectionConfiguration(
+    int PollingIntervalSeconds,
+    DeviceConfiguration[] DevicesConfiguration
+);
 
-    public List<DeviceConfiguration> DevicesConfiguration { get; init; } = [];
-}
-
-public sealed class DeviceConfiguration
-{
-    public int Id { get; init; }
-
-    public int Kind { get; init; }
-}
+public record DeviceConfiguration(
+    int Id,
+    int Kind,
+    string IpAddress,
+    int Port
+);

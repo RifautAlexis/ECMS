@@ -32,7 +32,7 @@ try
     try
     {
         // Validate configuration before registering runtime components
-        builder.Services.AddConfiguration();
+        builder.Services.ValidateAndAddConfiguration();
 
         // Shared pipeline: Collection writes, Core reads
         var channel = Channel.CreateBounded<CollectedData>(

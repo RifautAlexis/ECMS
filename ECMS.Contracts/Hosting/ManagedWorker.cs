@@ -1,10 +1,20 @@
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace ECMS.Contracts.Hosting;
 
 public abstract class ManagedWorker : BackgroundService
 {
     private readonly TaskCompletionSource _ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    protected ILogger Logger { get; }
+
+    protected ManagedWorker(ILogger logger)
+    {
+        ArgumentNullException.ThrowIfNull(logger);
+
+        Logger = logger;
+    }
 
     public Task Ready => _ready.Task;
 

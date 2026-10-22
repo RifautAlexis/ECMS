@@ -1,9 +1,14 @@
 using ECMS.Contracts.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace ECMS.Core;
 
 internal sealed class CoreWorker : ManagedWorker
 {
+    public CoreWorker(ILogger<CoreWorker> logger) : base(logger)
+    {
+    }
+
     public override WorkerStage Stage => WorkerStage.Core;
 
     protected override async Task InitializeAsync(CancellationToken stoppingToken)

@@ -1,9 +1,14 @@
 using ECMS.Contracts.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace ECMS.Communication;
 
 internal sealed class CommunicationWorker : ManagedWorker
 {
+    public CommunicationWorker(ILogger<CommunicationWorker> logger) : base(logger)
+    {
+    }
+
     public override WorkerStage Stage => WorkerStage.Communication;
 
     protected override async Task InitializeAsync(CancellationToken stoppingToken)
