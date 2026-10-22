@@ -4,30 +4,27 @@ namespace ECMS.Host.Configuration;
 
 public static class CollectionConfigurationValidator
 {
-    public static void ValidateCollection(JsonElement collection, List<string> errors)
+    public static void ValidateCollection(JsonElement collection,
+        List<string> errors)
     {
         // Validate pollingIntervalSeconds.
         if (!collection.TryGetProperty(
-                "pollingIntervalSeconds", out var interval))
-        {
+            "pollingIntervalSeconds",
+            out var interval))
             errors.Add(
                 "Missing required property 'collection.pollingIntervalSeconds'.");
-        }
         else if (interval.ValueKind != JsonValueKind.Number ||
-                 !interval.TryGetInt32(out int seconds))
-        {
+            !interval.TryGetInt32(out var seconds))
             errors.Add(
                 "'collection.pollingIntervalSeconds' must be an integer.");
-        }
         else if (seconds <= 0)
-        {
             errors.Add(
                 "'collection.pollingIntervalSeconds' must be positive.");
-        }
 
         // Validate devicesConfiguration.
         if (!collection.TryGetProperty(
-                "devicesConfiguration", out var devices))
+            "devicesConfiguration",
+            out var devices))
         {
             errors.Add(
                 "Missing required property 'collection.devicesConfiguration'.");
@@ -55,9 +52,26 @@ public static class CollectionConfigurationValidator
                 continue;
             }
 
-            ValidatorHelpers.ValidateRequiredString(device, "id", prefix, errors);
-            ValidatorHelpers.ValidateRequiredString(device, "kind", prefix, errors);
-            ValidatorHelpers.ValidateRequiredString(device, "ipAddress", prefix, errors);
+            ValidatorHelpers.ValidateRequiredInteger(
+                device,
+                "id",
+                prefix,
+                errors);
+            ValidatorHelpers.ValidateRequiredInteger(
+                device,
+                "kind",
+                prefix,
+                errors);
+            ValidatorHelpers.ValidateRequiredString(
+                device,
+                "ipAddress",
+                prefix,
+                errors);
+            ValidatorHelpers.ValidateRequiredInteger(
+                device,
+                "port",
+                prefix,
+                errors);
 
             index++;
         }

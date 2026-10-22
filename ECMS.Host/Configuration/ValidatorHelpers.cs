@@ -12,7 +12,9 @@ public static class ValidatorHelpers
     {
         value = default;
 
-        if (!parent.TryGetProperty(propertyName, out value))
+        if (!parent.TryGetProperty(
+            propertyName,
+            out value))
         {
             errors.Add($"Missing required property '{propertyName}'.");
             return false;
@@ -27,7 +29,7 @@ public static class ValidatorHelpers
 
         return true;
     }
-    
+
     public static void ValidateRequiredString(
         JsonElement parent,
         string propertyName,
@@ -36,7 +38,9 @@ public static class ValidatorHelpers
     {
         var path = $"{prefix}.{propertyName}";
 
-        if (!parent.TryGetProperty(propertyName, out var value))
+        if (!parent.TryGetProperty(
+            propertyName,
+            out var value))
         {
             errors.Add($"Missing required property '{path}'.");
             return;
@@ -48,9 +52,26 @@ public static class ValidatorHelpers
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(value.GetString()))
+        if (string.IsNullOrWhiteSpace(value.GetString())) errors.Add($"'{path}' must not be empty.");
+    }
+
+    public static void ValidateRequiredInteger(
+        JsonElement parent,
+        string propertyName,
+        string prefix,
+        List<string> errors)
+    {
+        var path = $"{prefix}.{propertyName}";
+
+        if (!parent.TryGetProperty(
+            propertyName,
+            out var value))
         {
-            errors.Add($"'{path}' must not be empty.");
+            errors.Add($"Missing required property '{path}'.");
+            return;
         }
+
+        if (value.ValueKind != JsonValueKind.Number || !value.TryGetInt32(out _))
+            errors.Add($"'{path}' must be an integer.");
     }
 }

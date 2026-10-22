@@ -111,9 +111,9 @@ ECMS.Host
 
 `ECMS.Collection` and `ECMS.Core` communicate through the collection channel configured by the Host.
 
-At this stage, Host registers `ECMS.Collection` and the channel that will carry its output. `ECMS.Core` and `ECMS.Communication` are not yet registered.
+The Host registers workers as `ManagedWorker` services and owns their lifecycle. Each worker declares a `WorkerStage` (`Core`, `Communication`, `Collection`) that defines its startup order, so consumers start before the producers that feed them; registration order does not matter and each stage may be used by only one worker; startup waits for each worker's `Ready` task before starting the next one. Workers are stopped in reverse order. The host also monitors worker execution and requests application shutdown if a worker exits unexpectedly.
 
-The Host therefore acts as the place where the application dependencies are assembled. Individual projects should not be responsible for creating their own dependencies.
+The current composition registers only the collection worker placeholder. Core and communication workers, and the collection behavior itself, remain to be implemented.
 
 ---
 
@@ -123,7 +123,7 @@ The Host therefore acts as the place where the application dependencies are asse
 
 The application is hosted as a .NET Worker Service.
 
-The Host is responsible for creating the application environment in which it can operate.
+The Host starts workers sequentially and does not report startup complete until every registered worker is ready. If startup fails, already-started workers are stopped in reverse order. During normal shutdown, the same reverse order is used so dependents stop before the workers they depend on.
 
 ```text
 ECMS.Collection
