@@ -1,47 +1,47 @@
 using System.Threading.Channels;
 using ECMS.Contracts;
-using ECMS.Contracts.Configuration;
 using ECMS.Contracts.Hosting;
+using ECMS.Collection.Orchestration;
 using Microsoft.Extensions.Logging;
 
 namespace ECMS.Collection;
 
 internal sealed class CollectionWorker : ManagedWorker
 {
-    private readonly CollectionConfiguration _settings;
-    private readonly ChannelWriter<CollectedData> _writer;
+    private readonly CollectionOrchestrator _orchestrator;
+    private readonly ChannelWriter<CollectionResult> _writer;
 
     public override WorkerStage Stage => WorkerStage.Collection;
 
     public CollectionWorker(
-        CollectionConfiguration settings,
-        ChannelWriter<CollectedData> writer,
+        CollectionOrchestrator orchestrator,
+        ChannelWriter<CollectionResult> writer,
         ILogger<CollectionWorker> logger)
         : base(logger)
     {
-        ArgumentNullException.ThrowIfNull(settings);
+        ArgumentNullException.ThrowIfNull(orchestrator);
         ArgumentNullException.ThrowIfNull(writer);
 
-        _settings = settings;
+        _orchestrator = orchestrator;
         _writer = writer;
 
-        Logger.LogInformation(
-            $"{nameof(CollectionWorker)} created with settings: {{Settings}}",
-            _settings);
+        Logger.LogInformation("{WorkerName} created", nameof(CollectionWorker));
     }
 
-    protected override async Task InitializeAsync(CancellationToken stoppingToken)
+    protected override Task InitializeAsync(CancellationToken stoppingToken)
     {
-        await Task.Delay(
-            TimeSpan.FromSeconds(5),
-            stoppingToken);
-        // return Task.CompletedTask;
+        return Task.CompletedTask;
     }
 
-    protected override Task ExecuteWorkerAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteWorkerAsync(CancellationToken stoppingToken)
     {
-        return Task.Delay(
-            Timeout.InfiniteTimeSpan,
-            stoppingToken);
+        try
+        {
+            await _orchestrator.RunAsync(stoppingToken);
+        }
+        finally
+        {
+            _writer.TryComplete();
+        }
     }
 }

@@ -55,23 +55,63 @@ public static class ValidatorHelpers
         if (string.IsNullOrWhiteSpace(value.GetString())) errors.Add($"'{path}' must not be empty.");
     }
 
-    public static void ValidateRequiredInteger(
-        JsonElement parent,
+    public static bool TryGetString(
+        JsonElement element,
         string propertyName,
         string prefix,
-        List<string> errors)
+        List<string> errors,
+        out string value)
     {
-        var path = $"{prefix}.{propertyName}";
+        value = default;
 
-        if (!parent.TryGetProperty(
+        if (!element.TryGetProperty(
             propertyName,
-            out var value))
+            out var property))
         {
-            errors.Add($"Missing required property '{path}'.");
-            return;
+            errors.Add($"{prefix}.{propertyName} is required.");
+            return false;
         }
 
-        if (value.ValueKind != JsonValueKind.Number || !value.TryGetInt32(out _))
-            errors.Add($"'{path}' must be an integer.");
+        if (property.ValueKind == JsonValueKind.Null)
+        {
+            errors.Add($"{prefix}.{propertyName} cannot be null.");
+            return false;
+        }
+
+        if (property.ValueKind != JsonValueKind.String || string.IsNullOrWhiteSpace(property.GetString()))
+        {
+            errors.Add($"{prefix}.{propertyName} must be a non-empty string.");
+            return false;
+        }
+
+        value = property.GetString()!;
+        return true;
+    }
+
+    public static bool TryGetInteger(
+        JsonElement element,
+        string propertyName,
+        string prefix,
+        List<string> errors,
+        out int value)
+    {
+        value = default;
+
+        if (!element.TryGetProperty(
+            propertyName,
+            out var property))
+        {
+            errors.Add($"{prefix}.{propertyName} is required.");
+            return false;
+        }
+
+        if (property.ValueKind != JsonValueKind.Number || !property.TryGetInt32(out var parsedValue))
+        {
+            errors.Add($"{prefix}.{propertyName} must be an integer.");
+            return false;
+        }
+
+        value = parsedValue;
+        return true;
     }
 }

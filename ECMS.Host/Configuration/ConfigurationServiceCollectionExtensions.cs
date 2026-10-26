@@ -122,6 +122,7 @@ public static class ConfigurationServiceCollectionExtensions
     {
         return new CollectionConfiguration(
             configurationSettings.Collection.PollingIntervalSeconds,
+            configurationSettings.Collection.MaxConcurrentRequests,
             configurationSettings.Collection.DevicesConfiguration
         );
     }

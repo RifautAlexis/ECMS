@@ -91,7 +91,7 @@ Collected data is transferred asynchronously using a `System.Threading.Channels`
 ```text
 ECMS.Collection
        │
-       │ Channel<CollectedData>
+       │ Channel<CollectionResult>
        ▼
    ECMS.Core
 ```
@@ -99,6 +99,7 @@ ECMS.Collection
 The channel is an implementation detail and is not part of the shared data contract.
 
 Core consumes the incoming data independently of the device collection mechanisms.
+Each item is a `CollectionResult`, which carries standardized data for a successful poll or the device identity and error details for a failed attempt.
 
 ---
 

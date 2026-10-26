@@ -35,7 +35,7 @@ try
         builder.Services.ValidateAndAddConfiguration();
 
         // Shared pipeline: Collection writes, Core reads
-        var channel = Channel.CreateBounded<CollectedData>(
+        var channel = Channel.CreateBounded<CollectionResult>(
             new BoundedChannelOptions(channelCapacity)
             {
                 FullMode = BoundedChannelFullMode.Wait,
